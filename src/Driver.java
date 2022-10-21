@@ -9,12 +9,25 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Driver implements Configuration{
+
+    LinkedList queue;
+
+    class ListNode{
+
+        Customer customer;
+        ListNode next;
+        ListNode(Customer customer , ListNode next){
+            this.customer= customer;
+            this.next = next;
+        }
+
+            public boolean compareCostumers(ListNode cus1 , ListNode cus2){
+           return 0 < cus1.customer.getAcNo().compareTo(cus2.customer.getAcNo());
+        }
+    }
 
     public static int readFile(Stack stack){
         int lastID = EMPTY;
@@ -23,9 +36,11 @@ public class Driver implements Configuration{
         try {
             Scanner sc = new Scanner(file);
             while(sc.hasNext()){
+
                 String line = sc.nextLine();
                 lastID = Integer.parseInt(line.split("-")[1]);
                 TV tv = new TV(line);
+
                 stack.push(tv);
             }
 
@@ -65,6 +80,102 @@ public class Driver implements Configuration{
         } catch (FileNotFoundException e) {
             System.out.println(CUSTOMER_FILE_ERROR);
         }
+    }
+
+
+    public ListNode middle(ListNode head){
+
+        if(head == null || head.next  == null)return head;
+
+        ListNode h = head;
+        ListNode s = head;
+
+        while(h.next != null && h.next.next != null){
+
+            h = h.next.next;
+            s = s.next;
+
+        }
+
+        return s;
+
+
+    }
+
+    public ListNode mergeListNode(ListNode h1 , ListNode h2){
+
+
+        ListNode fakeHead = new ListNode(null , null);
+        ListNode itr =fakeHead;
+
+        while(h1!= null ||  h2 != null){
+
+            if(h1 == null){
+                ListNode next = h2.next;
+                itr.next = h2;
+                h2 = next;
+
+            }
+
+            else if(h2 == null){
+                ListNode next = h1.next;
+                itr.next= h1;
+                h1 = next;
+
+            }
+
+            else{
+
+                if(h1.compareCostumers(h1 ,h2)){
+                    ListNode next = h1.next;
+                    itr.next= h1;
+                    h1 = next;
+
+                }
+
+                else{
+                    ListNode next = h2.next;
+                    itr.next = h2;
+                    h2 = next;
+
+                }
+
+
+
+
+            }
+
+            itr = itr.next;
+
+        }
+
+        return fakeHead.next;
+
+    }
+
+    public ListNode mergeSort(ListNode head){
+
+        if(head == null || head.next == null)return head;
+
+        ListNode mid = middle(head);
+        ListNode midNextNode = mid.next;
+        mid.next = null;
+        ListNode left = mergeSort(head);
+        ListNode right = mergeSort(midNextNode);
+        ListNode newList = mergeListNode(left , right);
+
+        return newList;
+
+
+    }
+    public ListNode sortList(ListNode head) {
+        return mergeSort(head);
+
+    }
+
+    public ListNode[] getListNodeArray(LinkedList q){
+
+        Customer[] temp = (Customer[]) q.toArray();
     }
 
     private static void menu(Stack stack, LinkedList queue){

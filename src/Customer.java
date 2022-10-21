@@ -3,6 +3,19 @@ import java.util.ArrayList;
 
 public class Customer implements Serializable {
     private String name;
+
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public String getLocalDir() {
+        return localDir;
+    }
+
+    public void setLocalDir(String localDir) {
+        this.localDir = localDir;
+    }
+
     private String acNo;
     private double numPurchased;
     private double totalCost;
