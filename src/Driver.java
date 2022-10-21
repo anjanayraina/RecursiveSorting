@@ -13,9 +13,9 @@ import java.util.*;
 
 public class Driver implements Configuration{
 
-    LinkedList queue;
+    static LinkedList queue;
 
-    class ListNode{
+    static class ListNode{
 
         Customer customer;
         ListNode next;
@@ -83,7 +83,7 @@ public class Driver implements Configuration{
     }
 
 
-    public ListNode middle(ListNode head){
+    public static  ListNode middle(ListNode head){
 
         if(head == null || head.next  == null)return head;
 
@@ -102,7 +102,7 @@ public class Driver implements Configuration{
 
     }
 
-    public ListNode mergeListNode(ListNode h1 , ListNode h2){
+    public static  ListNode mergeListNode(ListNode h1 , ListNode h2){
 
 
         ListNode fakeHead = new ListNode(null , null);
@@ -153,7 +153,7 @@ public class Driver implements Configuration{
 
     }
 
-    public ListNode mergeSort(ListNode head){
+    public static ListNode mergeSort(ListNode head){
 
         if(head == null || head.next == null)return head;
 
@@ -168,14 +168,36 @@ public class Driver implements Configuration{
 
 
     }
-    public ListNode sortList(ListNode head) {
+    public static  ListNode sortList(ListNode head) {
         return mergeSort(head);
 
     }
 
-    public ListNode[] getListNodeArray(LinkedList q){
+    public static  void createLinkedList(ListNode head){
+        LinkedList temp = new LinkedList();
+
+        while(head!=null){
+            temp.addLast(head.customer);
+            head = head.next;
+        }
+
+        queue= new LinkedList(temp);
+
+    }
+
+    public static void getListNodeArray(LinkedList q){
 
         Customer[] temp = (Customer[]) q.toArray();
+        ListNode head = new ListNode(temp[0] , null);
+        ListNode itr = head;
+        ListNode prev = itr;
+        for(int  i=1;i<temp.length;i++){
+            ListNode tempNode = new ListNode(temp[i] , null);
+            prev.next = tempNode;
+            prev = tempNode;
+        }
+        head = sortList(head);
+        createLinkedList(head);
     }
 
     private static void menu(Stack stack, LinkedList queue){
@@ -431,5 +453,6 @@ public class Driver implements Configuration{
         Stack stack = new Stack();
         LinkedList queue = new LinkedList();
         menu(stack, queue);
+        getListNodeArray(queue);
     }
 }
