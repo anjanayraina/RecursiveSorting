@@ -186,8 +186,13 @@ public class Driver implements Configuration{
     }
 
     public static void getListNodeArray(LinkedList q){
+        Customer[] temp = null;
+       try{
+          temp = (Customer[]) q.toArray();
+       }
+       catch (Exception e){
 
-        Customer[] temp = (Customer[]) q.toArray();
+       }
         ListNode head = new ListNode(temp[0] , null);
         ListNode itr = head;
         ListNode prev = itr;
